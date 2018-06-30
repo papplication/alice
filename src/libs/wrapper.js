@@ -1,5 +1,5 @@
 var utils = require('./utils.js')
-var settings = require('../settings_alice.js')
+var settings = require('../settings.js')
 var tumblr = require('tumblr.js')
 
 var client = tumblr.createClient({

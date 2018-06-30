@@ -32,7 +32,7 @@ exports.consumerSecret = 'your consumer secret'
 exports.token = 'your token'
 exports.tokenSecret = 'your token secret'
 ```
-+ **Start** Alice
++ **Start** Alice from inside the src directory.
 ``` 
 node alice.js
 ```
