@@ -53,7 +53,7 @@ module.exports = {
 	getFollowers: function (offset) {
 		client.userFollowing(offset, function (err, data) {
 			if (err) {
-				console.log('|ERROR| client.following:', err, data)
+				console.error('client.following:', err, data)
 			} else {
 				data.blogs.forEach(function (blog) {
 					followers.push(blog.name)
@@ -102,7 +102,7 @@ module.exports = {
 		}
 		client.taggedPosts(tags, params, function (err, data) {
 			if (err) {
-				console.log('|ERROR| client.taggedPosts:', err, data)
+				console.error('client.taggedPosts:', err, data)
 			} else if (data != null && data.length > 0) {
 				data.forEach(function (post) {
 					lastDate = post.timestamp
@@ -135,7 +135,7 @@ module.exports = {
 		console.log('Like post id:', id, 'reblogKey:', reblogKey)
 		client.likePost(id, reblogKey, function (err, data) {
 			if (err) {
-				console.log('|ERROR| client.likePost:', err, data)
+				console.error('client.likePost:', err, data)
 			}
 		})
 	},
@@ -144,7 +144,7 @@ module.exports = {
 		console.log('Follow blog:', url)
 		client.followBlog(url, function (err, data) {
 			if (err) {
-				console.log('|ERROR| client.followBlog:', err, data)
+				console.error('client.followBlog:', err, data)
 			} else {
 				followers.push(url)
 			}
@@ -155,7 +155,7 @@ module.exports = {
 		console.log("Post image:", imgUrl, 'with tags:', tags)
 		client.createPhotoPost(blogName, { source: imgUrl, tags: tags }, function (err, data) {
 			if (err) {
-				console.log('|ERROR| client.createPhotoPost:', err, data)
+				console.error('client.createPhotoPost:', err, data)
 			} else {
 				reblogKeyArray.push(reblogKey)
 			}
@@ -171,7 +171,7 @@ module.exports = {
 		}
 		client.reblogPost(blogName, params, function (err, data) {
 			if (err) {
-				console.log('|ERROR| client.reblogPost:', err, data)
+				console.error('client.reblogPost:', err, data)
 			} else {
 				reblogKeyArray.push(reblogKey)
 			}

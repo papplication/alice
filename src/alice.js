@@ -2,6 +2,14 @@ var utils = require('./libs/utils.js')
 var settings = require('./settings.js')
 var wrapper = require('./libs/wrapper.js')
 var spinner = require('cli-spinner').Spinner
+require('console-stamp')(console, {
+    pattern: 'dd/mm/yyyy HH:MM:ss.l',
+    include: ['log', 'error'],
+    colors: {
+        stamp: 'yellow',
+        label: 'green'
+    }
+});
 
 var loader = new spinner('%s')
 loader.setSpinnerString('⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏')
