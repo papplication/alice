@@ -9,7 +9,8 @@ var client = tumblr.createClient({
 	token_secret: settings.tokenSecret
 })
 
-var followers = []
+var followings = []
+var followingsCount = 0
 var reblogKeyArray = []
 var lastDate = 0
 var id = 0
@@ -46,20 +47,34 @@ module.exports = {
 		return tags
 	},
 	
-	getFollowersLength: function() {
-		return followers.length
+	getFollowingsLength: function() {
+		return followings.length
 	},
 
-	getFollowers: function (offset) {
-		client.userFollowing(offset, function (err, data) {
+	getFollowings: function (offset) {
+		client.userFollowing(offset, function (err, data, resp) {
 			if (err) {
-				console.error('client.following:', err, data)
+				if (resp.statusCode == 429) {
+					const limit = utils.findRateLimitHeader(resp.headers, '-limit')
+					const remaining = utils.findRateLimitHeader(resp.headers, '-remaining')
+					const reset = utils.findRateLimitHeader(resp.headers, '-reset')
+
+					var timeout = 10000
+					if (remaining == 0) {
+						timeout = reset
+					}
+					console.error("userFollowing API limit exceeded, waiting " + timeout + "ms")
+					setTimeout(() => module.exports.getFollowings(offset), timeout)
+				} else {
+					console.error('client.following:', err, data)
+				}
 			} else {
 				data.blogs.forEach(function (blog) {
-					followers.push(blog.name)
+					followings.push(blog.name)
 				})
+				followingsCount = data.total_blogs
 				if (data.total_blogs > offset+data.blogs.length) {
-					module.exports.getFollowers(offset+followers.length)
+					module.exports.getFollowings(offset+data.blogs.length)
 				}
 			}
 		})
@@ -68,7 +83,7 @@ module.exports = {
 	doHarvest: function (callback) {
 		if (id != 0) {
 			var random = utils.randomInt(0,10)
-			if (random < 9 && followers.indexOf(url) == -1) {
+			if (random < 9 && followings.indexOf(url) == -1) {
 				module.exports.followBlog(url)
 			}
 			if (random < 3) {
@@ -141,12 +156,17 @@ module.exports = {
 	},
 
 	followBlog: function (url) {
+		if (followingsCount != followings.length) {
+			return
+		}
+
 		console.log('Follow blog:', url)
 		client.followBlog(url, function (err, data) {
 			if (err) {
 				console.error('client.followBlog:', err, data)
 			} else {
-				followers.push(url)
+				followings.push(url)
+				followingsCount += 1
 			}
 		})
 	},

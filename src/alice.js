@@ -15,7 +15,7 @@ var loader = new spinner('%s')
 loader.setSpinnerString('⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏')
 loader.start()
 
-wrapper.getFollowers(0)
+wrapper.getFollowings(0)
 
 var CronJob = require('cron').CronJob
 
@@ -23,7 +23,7 @@ new CronJob('1-59/1 * * * *', function() {
     loader.stop(true)
 	console.log('------------------------------')
     console.log('Harvest started')
-    console.log('Total following: %d', wrapper.getFollowersLength())
+    console.log('Following cache: %d', wrapper.getFollowingsLength())
     wrapper.init()
 
     console.log('Tags are: ', wrapper.getTags())
