@@ -52,7 +52,7 @@ module.exports = {
 	},
 
 	getFollowings: function (offset) {
-		client.userFollowing(offset, function (err, data, resp) {
+		client.userFollowing({offset:offset}, function (err, data, resp) {
 			if (err) {
 				if (resp.statusCode == 429) {
 					const limit = utils.findRateLimitHeader(resp.headers, '-limit')
@@ -63,6 +63,7 @@ module.exports = {
 					if (remaining == 0) {
 						timeout = reset
 					}
+
 					console.error("userFollowing API limit exceeded, waiting " + timeout + "ms")
 					setTimeout(() => module.exports.getFollowings(offset), timeout)
 				} else {
@@ -70,11 +71,25 @@ module.exports = {
 				}
 			} else {
 				data.blogs.forEach(function (blog) {
-					followings.push(blog.name)
+					if (followings.indexOf(blog.name) != -1) {
+						//Invalid blog detected
+						followingsCount -= 1
+					} else {
+						followings.push(blog.name)
+					}
 				})
-				followingsCount = data.total_blogs
-				if (data.total_blogs > offset+data.blogs.length) {
-					module.exports.getFollowings(offset+data.blogs.length)
+
+				if (followingsCount == 0) {
+					followingsCount = data.total_blogs
+				}
+
+				if (followingsCount > followings.length) {
+					var offsetBonus = data.blogs.length
+					if (data.blogs.length == 0) {
+						followingsCount -= 20
+						offsetBonus = 20
+					}
+					module.exports.getFollowings(offset+offsetBonus)
 				}
 			}
 		})
@@ -155,8 +170,26 @@ module.exports = {
 		})
 	},
 
+	unFollowBlogs: function () {
+		if (followings.length == 0) {
+			return
+		}
+
+		client.unfollowBlog(followings[0], function (err, data, resp) {
+			if (err) {
+				console.error('client.unfollowBlog:', err, data)
+				setTimeout(() => module.exports.unFollowBlogs(), 10000)
+			} else {
+				console.log('Unfollow blog:', followings[0])
+				followings.shift()
+				followingsCount -= 1
+				module.exports.unFollowBlogs()
+			}
+		})
+	},
+
 	followBlog: function (url) {
-		if (followingsCount != followings.length) {
+		if (followingsCount > followings.length) {
 			return
 		}
 
