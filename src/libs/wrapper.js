@@ -67,7 +67,7 @@ module.exports = {
 					console.error("userFollowing API limit exceeded, waiting " + timeout + "ms")
 					setTimeout(() => module.exports.getFollowings(offset), timeout)
 				} else {
-					console.error('client.following:', err, data)
+					console.error('client.following:', err)
 				}
 			} else {
 				data.blogs.forEach(function (blog) {
@@ -132,7 +132,7 @@ module.exports = {
 		}
 		client.taggedPosts(tags, params, function (err, data) {
 			if (err) {
-				console.error('client.taggedPosts:', err, data)
+				console.error('client.taggedPosts:', err)
 			} else if (data != null && data.length > 0) {
 				data.forEach(function (post) {
 					lastDate = post.timestamp
@@ -165,7 +165,7 @@ module.exports = {
 		console.log('Like post id:', id, 'reblogKey:', reblogKey)
 		client.likePost(id, reblogKey, function (err, data) {
 			if (err) {
-				console.error('client.likePost:', err, data)
+				console.error('client.likePost:', err)
 			}
 		})
 	},
@@ -177,7 +177,7 @@ module.exports = {
 
 		client.unfollowBlog(followings[0], function (err, data, resp) {
 			if (err) {
-				console.error('client.unfollowBlog:', err, data)
+				console.error('client.unfollowBlog:', err)
 				setTimeout(() => module.exports.unFollowBlogs(), 10000)
 			} else {
 				console.log('Unfollow blog:', followings[0])
@@ -196,7 +196,7 @@ module.exports = {
 		console.log('Follow blog:', url)
 		client.followBlog(url, function (err, data) {
 			if (err) {
-				console.error('client.followBlog:', err, data)
+				console.error('client.followBlog:', err)
 			} else {
 				followings.push(url)
 				followingsCount += 1
@@ -208,7 +208,7 @@ module.exports = {
 		console.log("Post image:", imgUrl, 'with tags:', tags)
 		client.createPhotoPost(blogName, { source: imgUrl, tags: tags }, function (err, data) {
 			if (err) {
-				console.error('client.createPhotoPost:', err, data)
+				console.error('client.createPhotoPost:', err)
 			} else {
 				reblogKeyArray.push(reblogKey)
 			}
@@ -224,7 +224,7 @@ module.exports = {
 		}
 		client.reblogPost(blogName, params, function (err, data) {
 			if (err) {
-				console.error('client.reblogPost:', err, data)
+				console.error('client.reblogPost:', err)
 			} else {
 				reblogKeyArray.push(reblogKey)
 			}
