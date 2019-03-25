@@ -37,19 +37,19 @@ exports.tokenSecret = 'your token secret'
 node alice.js
 ```
 ```
-Harvest started
-Total following: 126
-Tags are:  haha
-Minimum note count: 700
-------------------------------
-Like post id: 167096891257  reblog_key: tjkBl9Vl
-------------------------------
-Harvest started
-Total following: 126
-Tags are:  lol
-Minimum note count: 460
-------------------------------
-Like post id: 166927269501  reblog_key: Zgj6aX3y
+[25/03/2019 22:57:00.675] [LOG]    Harvest started
+[25/03/2019 22:57:00.675] [LOG]    Following cache: 677
+[25/03/2019 22:57:00.675] [LOG]    Tags are:  cute
+[25/03/2019 22:57:00.675] [LOG]    Minimum note count: 696
+[25/03/2019 22:57:00.676] [LOG]    ------------------------------
+[25/03/2019 22:58:00.677] [LOG]    Like post id: 167096891257  reblog_key: tjkBl9Vl
+[25/03/2019 22:58:00.677] [LOG]    ------------------------------
+[25/03/2019 22:58:00.678] [LOG]    Harvest started
+[25/03/2019 22:58:00.678] [LOG]    Following cache: 677
+[25/03/2019 22:58:00.678] [LOG]    Tags are:  forest
+[25/03/2019 22:58:00.678] [LOG]    Minimum note count: 480
+[25/03/2019 22:58:00.679] [LOG]    ------------------------------
+[25/03/2019 22:58:00.679] [LOG]    Like post id: 166927269501  reblog_key: Zgj6aX3y
 ```
 ## Requirements
 + Node.js [download](https://nodejs.org/en/#download)
