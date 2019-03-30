@@ -26,7 +26,7 @@ var currentAction = 0
 module.exports = {
 	
 	init: function() {
-		settings.noteLimit = utils.randomInt(20, 900)
+		settings.noteLimit = settings.noteLimit + utils.randomInt(20, 2000)
 		tags = settings.tagsArray[utils.randomInt(0, settings.tagsArray.length)]
 	},
 
