@@ -21,12 +21,13 @@ var url = ''
 var tags = ''
 var before = 0
 var likeCount = 0
+var originalNoteLimit = settings.noteLimit
 var currentAction = 0
 
 module.exports = {
 	
 	init: function() {
-		settings.noteLimit = settings.noteLimit + utils.randomInt(20, 2000)
+		settings.noteLimit = originalNoteLimit + utils.randomInt(20, 2000)
 		tags = settings.tagsArray[utils.randomInt(0, settings.tagsArray.length)]
 	},
 
