@@ -11,6 +11,8 @@ var client = tumblr.createClient({
 
 var followings = []
 var followingsCount = 0
+var unFollowLimit = 100 * settings.unFollowRate
+var unFollowCount = 0
 var reblogKeyArray = []
 var lastDate = 0
 var id = 0
@@ -77,9 +79,6 @@ module.exports = {
 						followingsCount -= 1
 					} else {
 						followings.push(blog.name)
-						if (utils.randomInt(0, 1000) < 100 * settings.unFollowRate) {
-							module.exports.unFollowBlogs(blog.name)
-						}
 					}
 				})
 
@@ -111,6 +110,8 @@ module.exports = {
 				} else {
 					module.exports.reblogPost(settings.blogName, id, reblogKey)
 				}
+			} else {
+				module.exports.unFollowBlogs()
 			}
 		} else {
 			const postType = settings.postTypes[utils.randomInt(0, settings.postTypes.length)]
@@ -118,7 +119,7 @@ module.exports = {
 
 			return
 		}
-
+		
 		currentAction++
 		if (currentAction < settings.maxActionPerMinute) {
 			module.exports.doHarvest(callback)
@@ -184,10 +185,13 @@ module.exports = {
 				console.error('client.unfollowBlog:', err)
 				setTimeout(() => module.exports.unFollowBlogs(), 10000)
 			} else {
-				console.log('Unfollow blog:', followings[0])
-				followings.shift()
-				followingsCount -= 1
-				module.exports.unFollowBlogs()
+				if (unFollowCount < unFollowLimit && utils.randomInt(0, 5) == 1 ) {
+					console.log('Unfollow blog:', followings[0])
+					unFollowCount++
+					followings.shift()
+					followingsCount -= 1
+					module.exports.unFollowBlogs()
+				}
 			}
 		})
 	},
