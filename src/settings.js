@@ -5,6 +5,7 @@ exports.postTypes = ['photo']
 exports.blogName = 'your blog name'
 exports.noteLimit = 5
 exports.limit = 20
+exports.unFollowRate = 0.1
 exports.maxLikeCount = 1
 exports.maxActionPerMinute = 1
 

@@ -77,6 +77,9 @@ module.exports = {
 						followingsCount -= 1
 					} else {
 						followings.push(blog.name)
+						if (utils.randomInt(0, 1000) < 100 * settings.unFollowRate) {
+							module.exports.unFollowBlogs(blog.name)
+						}
 					}
 				})
 
